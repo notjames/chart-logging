@@ -13,7 +13,7 @@ variables:
   DEPLOY_KUBECONFIG: ${CI_PROJECT_DIR}/deploy/kube.config
   DEPLOY_VALUES: ${CI_PROJECT_DIR}/deploy/helm-${CHART_NAME}-values.yaml
   TILLER_NAMESPACE: kraken
-  CI_DEBUG_TRACING: true
+  CI_DEBUG_TRACE: true
 
 stages:
   - build
