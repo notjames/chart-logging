@@ -24,8 +24,8 @@ helm lint "${CHART_NAME}"
 echo "2"
 
 set -x
-helm install --replace --name "${RELEASE}" --namespace "${NAMESPACE}" ./"${CHART_NAME} "--set elasticsearch-chart.name=elasticsearch-"${CI_JOB_ID}" \
-             --set eventrouter.name=eventrouter-"${CI_JOB_ID}" --set fluent-bit.name=fluent-bit-"${CI_JOB_ID}"
+helm install --replace --name "${RELEASE}" --namespace "${NAMESPACE}" "--set elasticsearch-chart.name=elasticsearch-"${CI_JOB_ID}" \
+             --set eventrouter.name=eventrouter-"${CI_JOB_ID}" --set fluent-bit.name=fluent-bit-"${CI_JOB_ID}" ./"${CHART_NAME}
 set +x
 echo "3"
 
