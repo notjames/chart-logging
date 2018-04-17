@@ -19,15 +19,10 @@ if [[ ! -d ${CHART_NAME} ]]; then
   exit 1
 fi
 
-echo "1"
 helm lint "${CHART_NAME}"
-echo "2"
 
-set -x
 helm install --replace --name "${RELEASE}" --namespace "${NAMESPACE}" --set "elasticsearch-chart.name=elasticsearch-${CI_JOB_ID}" \
              --set "eventrouter.name=eventrouter-${CI_JOB_ID}" --set "fluent-bit.name=fluent-bit-${CI_JOB_ID}" "./${CHART_NAME}"
-set +x
-echo "3"
 
 echo Waiting for install to complete
 sleep "${INSTALL_WAIT}"
