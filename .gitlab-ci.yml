@@ -33,10 +33,10 @@ variables:
 
       if [[ $count -gt 1 && $count -le $soft_thresh ]]; then
         echo >&2 "Attempt($count/$soft_thresh) k8s namespace deletion failed"
-      elif [[ $count -gt 1 && $count -gt $soft_thresh && $count -le $hard_thresh ]]
+      elsif [[ $count -gt 1 && $count -gt $soft_thresh && $count -le $hard_thresh ]]
         echo >&2 "Attempt($count/$soft_thresh) k8s namespace deletion failed...trying forced"
         kubecmd="delete --force"
-      elif [[ $count -gt 1 && $count -gt $hard_thresh ]]
+      elsif [[ $count -gt 1 && $count -gt $hard_thresh ]]
         echo >&2 "Attempt($count > $hard_thresh) k8s namespace deletion failed too many times."
         return 100
       fi
