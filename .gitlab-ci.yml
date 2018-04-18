@@ -15,38 +15,7 @@ variables:
   TILLER_NAMESPACE: kraken
   CI_DEBUG_TRACE: "false"
 
-.auto_devops: &auto_devops |
-  delete_ns() {
-    local counter kubecmd
-
-    kubecmd="delete"
-    soft_thresh=3
-    hard_thresh=5
-    counter=0
-
-    while kubectl ns | grep -cP $NAMESPACE; do
-      ((count++))
-
-      if [[ $count -le $soft_thresh ]]; then
-        kubectl $kubecmd ns $NAMESPACE
-      fi
-
-      if [[ $count -gt 1 && $count -le $soft_thresh ]]; then
-        echo >&2 "Attempt($count/$soft_thresh) k8s namespace deletion failed"
-      elsif [[ $count -gt 1 && $count -gt $soft_thresh && $count -le $hard_thresh ]]
-        echo >&2 "Attempt($count/$soft_thresh) k8s namespace deletion failed...trying forced"
-        kubecmd="delete --force"
-      elsif [[ $count -gt 1 && $count -gt $hard_thresh ]]
-        echo >&2 "Attempt($count > $hard_thresh) k8s namespace deletion failed too many times."
-        return 100
-      fi
-    done
-
-    kubectl $kubecmd namespace $NAMESPACE
-  }
-
 before_script:
-  - *auto_devops
   - helm registry login -u ${REGISTRY_USER}+${ROBOT_ACCOUNT} -p ${REGISTRY_PASSWORD} ${REGISTRY}
 
 stages:
@@ -166,7 +135,7 @@ clean_test:
   script:
     - build/clean.sh
   after_script:
-    - delete_ns
+    - kubectl delete --force ns $NAMESPACE
 
 helm_publish_alpha:
   stage: publish
