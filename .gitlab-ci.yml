@@ -45,6 +45,10 @@ variables:
     kubectl $kubecmd namespace $NAMESPACE
   }
 
+before_script:
+  - *auto_devops
+  - helm registry login -u ${REGISTRY_USER}+${ROBOT_ACCOUNT} -p ${REGISTRY_PASSWORD} ${REGISTRY}
+
 stages:
   - build
   - dependency
@@ -55,10 +59,6 @@ stages:
   - clean
   - publish
   - deploy
-
-before_script:
-  - *auto_devops
-  - helm registry login -u ${REGISTRY_USER}+${ROBOT_ACCOUNT} -p ${REGISTRY_PASSWORD} ${REGISTRY}
 
 build_chart:
   stage: build
